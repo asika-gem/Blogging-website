@@ -48,7 +48,7 @@ const Home = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-8">
           <h2 className="text-2xl md:text-3xl font-bold">Latest Posts</h2>
 
-          <Link to="/explore" className="text-purple-600 font-medium">
+          <Link to="/login" className="text-purple-600 font-medium">
             View all →
           </Link>
         </div>

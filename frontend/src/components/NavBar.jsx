@@ -1,60 +1,96 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
-  return (
-    <nav className="w-full bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between px-4 sm:px-6 py-3 gap-3">
-        {/* Left: Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="logo" className="w-8 h-8" />
-          <span className="text-lg sm:text-xl font-bold text-white bg-purple-600 px-2 py-1 rounded-md">
-            Blogify
-          </span>
-        </Link>
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const { currentUser, logout } = useAuth();
 
-        {/* Middle: Links */}
-        <div className="flex flex-wrap gap-3 sm:gap-6 text-gray-600 text-sm sm:text-base">
-          <Link to="/" className="px-2 py-1 hover:text-purple-700">
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && search.trim()) {
+      navigate(`/posts?search=${search}`);
+    }
+  };
+
+  const linkStyle =
+    "relative text-[16px] font-medium text-gray-700 hover:text-purple-600 transition";
+
+  const underline =
+    "after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-purple-600 after:transition-all hover:after:w-full";
+
+  return (
+    <header className="sticky top-0 z-50 bg-white border-b border-purple-100 shadow-sm">
+      <div className="flex items-center px-4 md:px-8 py-3">
+        {/* LEFT */}
+        <div className="flex items-center gap-10 shrink-0">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logo} className="w-8 h-8" />
+            <span className="font-bold text-xl text-purple-600">Blogify</span>
+          </Link>
+
+          <Link to="/" className={`${linkStyle} ${underline}`}>
             Home
           </Link>
 
-          <Link to="/explore" className="px-2 py-1 hover:text-purple-700">
-            Explore
-          </Link>
-
-          
+          {currentUser && (
+            <Link to="/dashboard" className={`${linkStyle} ${underline}`}>
+              Dashboard
+            </Link>
+          )}
         </div>
 
-        {/* Search (wraps on small screens instead of hiding) */}
-        <div className="flex items-center bg-gray-100 px-3 py-2 rounded-lg w-full sm:w-64 md:w-72">
-          <Search size={18} className="text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search posts..."
-            className="bg-transparent outline-none ml-2 w-full text-sm"
-          />
+        {/* CENTER SEARCH */}
+        <div className="flex-1 flex justify-center">
+          <div className="flex items-center bg-purple-50 border border-purple-100 px-4 py-2 rounded-full w-full max-w-md focus-within:bg-white focus-within:border-purple-400 transition">
+            <Search size={16} className="text-purple-500" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
+              placeholder="Search posts..."
+              className="bg-transparent outline-none text-sm ml-2 w-full"
+            />
+          </div>
         </div>
 
-        {/* Right: Auth Buttons */}
-        <div className="flex gap-2 sm:gap-3 ml-auto sm:ml-0">
-          <Link
-            to="/signin"
-            className="px-3 sm:px-4 py-2 text-sm rounded-lg hover:bg-purple-100 text-gray-600"
-          >
-            Login
-          </Link>
+        
+        <div className="flex items-center gap-10 shrink-0">
+          {/* CREATE */}
+          {currentUser && (
+            <Link
+              to="/dashboard/createPost"
+              className="flex items-center gap-1 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-700 transition"
+            >
+              <Plus size={16} />
+              Create
+            </Link>
+          )}
 
-          <Link
-            to="/signup"
-            className="px-3 sm:px-4 py-2 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-          >
-            Register
-          </Link>
+          {/* AUTH */}
+          {!currentUser ? (
+            <>
+              <Link className={`${linkStyle} ${underline}`} to="/login">
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="text-sm bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <button className={`${linkStyle} ${underline}`} onClick={logout}>
+              Logout
+            </button>
+          )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

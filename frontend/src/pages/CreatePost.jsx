@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Editor from "../components/RichTextEditor";
+import { apiRequest } from "../services/api";
 
 const CreatePost = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null); // file input
+  const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -23,30 +24,31 @@ const CreatePost = () => {
     setLoading(true);
 
     try {
-      const formData = new FormData(); // for file uploads
+      const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
       formData.append("category", category);
-      formData.append("image", image); // file input
+      formData.append("image", image);
 
-      const res = await fetch("http://localhost:5001/api/posts", {
-        method: "POST",
-        body: formData,
+      const res = await apiRequest.post("/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      await res.json();
+      console.log( res.data);
 
       toast.success("Post created successfully!");
 
       setTitle("");
       setDescription("");
-      setImage(null); // reset file input
+      setImage(null);
       setCategory("");
 
       navigate("/");
     } catch (err) {
       console.log(err);
-      toast.error("Something went wrong!");
+      toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -54,7 +56,6 @@ const CreatePost = () => {
 
   return (
     <div className="bg-purple-50 min-h-screen p-6">
-      {/* CARD */}
       <div className="bg-white max-w-4xl mx-auto rounded-2xl shadow-sm border border-purple-100 p-8">
         {/* HEADER */}
         <div className="mb-6">
@@ -70,34 +71,31 @@ const CreatePost = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* TITLE + CATEGORY */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="text-purple-900 font-medium">Title</label>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Post title..."
-                className="w-full border border-purple-100 rounded-lg p-3 mt-2 
-                focus:ring-2 focus:ring-purple-500 outline-none"
-              />
-            </div>
+          {/* TITLE */}
+          <div>
+            <label className="text-purple-900 font-medium">Title</label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Post title..."
+              className="w-full border border-purple-100 rounded-lg p-3 mt-2 focus:ring-2 focus:ring-purple-500 outline-none"
+            />
+          </div>
 
-            <div>
-              <label className="text-purple-900 font-medium">Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full border border-purple-100 rounded-lg p-3 mt-2 
-                focus:ring-2 focus:ring-purple-500 outline-none"
-              >
-                <option value="">Select Category</option>
-                <option>Technology</option>
-                <option>Travel</option>
-                <option>Lifestyle</option>
-                <option>Business</option>
-              </select>
-            </div>
+          {/* CATEGORY */}
+          <div>
+            <label className="text-purple-900 font-medium">Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full border border-purple-100 rounded-lg p-3 mt-2 focus:ring-2 focus:ring-purple-500 outline-none"
+            >
+              <option value="">Select Category</option>
+              <option>Technology</option>
+              <option>Travel</option>
+              <option>Lifestyle</option>
+              <option>Business</option>
+            </select>
           </div>
 
           {/* IMAGE */}
@@ -108,18 +106,15 @@ const CreatePost = () => {
 
             <input
               type="file"
-            
               accept="image/*"
               onChange={(e) => setImage(e.target.files[0])}
-              className="w-full border border-purple-100 rounded-lg p-3 mt-2 
-  focus:ring-2 focus:ring-purple-500 outline-none"
+              className="w-full border border-purple-100 rounded-lg p-3 mt-2 focus:ring-2 focus:ring-purple-500 outline-none"
             />
           </div>
 
-          {/* EDITOR */}
+          {/* CONTENT */}
           <div>
             <label className="text-purple-900 font-medium">Content</label>
-
             <div className="mt-2 border border-purple-100 rounded-lg bg-white">
               <Editor value={description} setValue={setDescription} />
             </div>
@@ -137,8 +132,7 @@ const CreatePost = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 rounded-lg bg-linear-to-r from-purple-600 to-purple-800 text-white
-              hover:from-purple-700 hover:to-purple-900 transition"
+              className="px-6 py-3 rounded-lg bg-purple-700 text-white hover:bg-purple-800 transition"
             >
               {loading ? "Publishing..." : "Publish"}
             </button>

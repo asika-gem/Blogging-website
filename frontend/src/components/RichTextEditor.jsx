@@ -1,7 +1,5 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
@@ -27,7 +25,6 @@ import {
   AlignRight,
   Superscript as SupIcon,
   Subscript as SubIcon,
-
 } from "lucide-react";
 
 /* ---------------- BUTTON ---------------- */
@@ -63,8 +60,8 @@ export default function Editor({ value, setValue }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
-      Underline,
-      Link.configure({ openOnClick: false }),
+      // Underline,
+      // Link.configure({ openOnClick: false }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Superscript,
       Subscript,
@@ -268,7 +265,6 @@ export default function Editor({ value, setValue }) {
           editor={editor}
           className="prose max-w-none focus:outline-none 
           [&_.ProseMirror]:outline-none [&_.ProseMirror]:bg-transparent"
-         
         />
       </div>
     </div>

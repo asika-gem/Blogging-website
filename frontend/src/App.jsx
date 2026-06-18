@@ -4,7 +4,6 @@ import { useAuth } from "./context/AuthContext";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Explore from "./pages/Explore";
 import Login from "./pages/Login";
 import CreatePost from "./pages/CreatePost";
 import Dashboard from "./pages/DashBoard";
@@ -14,6 +13,10 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PostCard from "./components/PostCard";
 import Overview from "./pages/Overview";
+import Register from "./pages/Register";
+import MyPosts from "./pages/MyPosts";
+import About from "./components/AboutUs";
+import Contact from "./components/ContactUs";
 
 function App() {
   const location = useLocation();
@@ -26,7 +29,8 @@ function App() {
   return (
     <>
       {/* TOAST */}
-      <ToastContainer />
+
+      <ToastContainer position="top-center" autoClose={3000} />
 
       <div>
         {/* NAVBAR */}
@@ -39,20 +43,22 @@ function App() {
             element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
           />
 
-          {/* HOME */}
-          <Route path="/" element={<Home />} />
-
-          {/* EXPLORE */}
+          {/* SIGN UP */}
           <Route
-            path="/explore"
-            element={
-              <ProtectedRoute>
-                <Explore />
-              </ProtectedRoute>
-            }
+            path="/register"
+            element={isLoggedIn ? <Navigate to="/dashboard" /> : <Register />}
           />
 
-          {/* DASHBOARD PARENT */}
+          {/* HOME */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+
+          {/* PUBLIC POSTS */}
+          <Route path="/posts" element={<PostCard />} />
+          <Route path="/posts/:id" element={<PostDetail />} />
+
+          {/* DASHBOARD */}
           <Route
             path="/dashboard"
             element={
@@ -61,14 +67,14 @@ function App() {
               </ProtectedRoute>
             }
           >
-            {/* Child routes rendered inside Outlet */}
-            <Route index element={<Overview/>} /> // Default to Overview when /dashboard is accessed
+            {/* Overview */}
+            <Route index element={<Overview />} />
 
-            <Route path="posts" element={<PostCard />} />
-            <Route path="posts/:id" element={<PostDetail />} />
-
+            {/* Protected Pages */}
             <Route path="createPost" element={<CreatePost />} />
-
+            <Route path="posts/:id" element={<PostDetail />} />
+            <Route path="posts" element={<PostCard />} />
+            <Route path="my-posts" element={<MyPosts />} />
             <Route path="EditPost/:id" element={<EditPost />} />
           </Route>
 

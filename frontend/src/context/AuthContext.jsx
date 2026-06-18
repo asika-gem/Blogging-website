@@ -1,52 +1,41 @@
-import { createContext, useContext, useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useEffect, useState, useContext } from "react";
+import { apiRequest } from "../services/api";
 
-const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // Load user from localStorage (refresh persistence)
-  const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
-  });
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null,
+  );
 
-  const [token, setToken] = useState(() => {
-    return localStorage.getItem("token");
-  });
+  const isLoggedIn = !!currentUser;
 
-  // ✅ FRONTEND ONLY LOGIN (mock)
-  const login = (email, password) => {
-    if (!email || !password) return false;
-
-    const fakeUser = {
-      id: Date.now(),
-      name: email.split("@")[0],
-      email,
-    };
-
-    const fakeToken = "mock-token-" + Date.now();
-
-    setUser(fakeUser);
-    setToken(fakeToken);
-
-    localStorage.setItem("user", JSON.stringify(fakeUser));
-    localStorage.setItem("token", fakeToken);
-
-    return true;
+  const updateUser = (data) => {
+    setCurrentUser(data);
+    localStorage.setItem("user", JSON.stringify(data));
   };
 
-  // LOGOUT
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+  const logout = async () => {
+    try {
+      await apiRequest.post("/auth/logout");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setCurrentUser(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+    }
   };
 
-  const isLoggedIn = !!token;
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoggedIn }}>
+    <AuthContext.Provider
+      value={{ currentUser, isLoggedIn, updateUser, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

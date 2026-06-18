@@ -1,19 +1,5 @@
 import mongoose from "mongoose";
-
-const commentSchema = new mongoose.Schema(
-  {
-    author: {
-      type: String,
-      default: "Anonymous",
-    },
-    text: {
-      type: String,
-      required: true,
-    },
-  },
-  { timestamps: true },
-);
-
+//  Post Schema
 const postSchema = new mongoose.Schema(
   {
     title: {
@@ -33,16 +19,25 @@ const postSchema = new mongoose.Schema(
 
     image: {
       type: String,
-      required: true,
+      required: false,
     },
 
-    likes: {
-      type: Number,
-      default: 0,
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
 
-    // 💬 upgraded comments
-    comments: [commentSchema],
+    published: {
+      type: Boolean,
+      default: true,
+    },
+
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   {
     timestamps: true,
