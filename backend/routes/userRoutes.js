@@ -4,6 +4,8 @@ import {
   getUserById,
   updateUser,
   deleteUser,
+ 
+  
 } from "../controllers/userController.js";
 import {
   verifyToken,
@@ -20,5 +22,6 @@ router.get("/:id", verifyToken, allowSelfOrAdmin, getUserById);
 router.put("/:id", verifyToken, allowSelfOrAdmin, updateUser);
 // Delete user (admin only)
 router.delete("/:id", verifyToken, authorizeRoles("admin"), deleteUser);
+
 
 export default router;

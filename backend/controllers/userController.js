@@ -1,6 +1,5 @@
 import User from "../models/userModel.js";
 
-
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
@@ -16,7 +15,6 @@ export const getUsers = async (req, res) => {
       message: "Internal server error",
     });
   }
-  
 };
 export const getUserById = async (req, res) => {
   try {
@@ -138,3 +136,4 @@ export const deleteUser = async (req, res) => {
     });
   }
 };
+

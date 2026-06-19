@@ -43,12 +43,9 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(userData));
       updateUser(userData);
 
-      // Role-based redirect
-      if (res.data.role === "admin") {
-        navigate("/admin");
-      } else {
+    
         navigate("/");
-      }
+  
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
       console.log(error);

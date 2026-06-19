@@ -15,7 +15,7 @@ router.post("/logout", logoutUser);
 
 router.get("/me", verifyToken, getCurrentUser);
 
-// router.get("/alluser", getalluser);
+
 // router.put("/update/:id", updateuser);
 // router.delete("/delete/:id", deleteuser);
 

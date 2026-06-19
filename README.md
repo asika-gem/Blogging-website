@@ -68,7 +68,7 @@ It is designed as a **beginner MERN stack project** to help interns understand h
 ## Project Structure
 
 ```
-blogify/
+blogging-platform/
 │
 ├── backend/
 │   ├── app.js                      # Main server + DB connection
@@ -145,8 +145,8 @@ Make sure you have the following installed on your machine:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/mern-media-player.git
-cd mern-media-player
+git clone https://github.com/asika-gem/Blogging-website.git
+cd blogging-platform
 ```
 
 ---
@@ -176,9 +176,11 @@ npm install express mongoose dotenv cors jsonwebtoken bcryptjs
 npm install --save-dev nodemon
 ```
 
+---
+
 ### `app.js` — Entry Point
 
-````js
+```js
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
@@ -189,10 +191,12 @@ import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+
 dotenv.config();
+
 const app = express();
 
-//CORS
+// CORS
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
@@ -204,13 +208,13 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-//Routes
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 
-//  Server
+// Server
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
@@ -223,8 +227,9 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => {
     console.error("MongoDB connection failed:", err.message);
-    process.exit(1); // stop server if DB fails
+    process.exit(1);
   });
+```
 
 ---
 
@@ -239,15 +244,19 @@ npm install
 
 # Start the React development server
 npm start
-````
+```
 
 The frontend will run on `http://localhost:5173`.
+
+---
 
 ### Frontend Dependencies
 
 ```bash
 npm install axios react-router-dom
 ```
+
+---
 
 ### `services/api.js` — Axios Configuration
 
@@ -274,7 +283,7 @@ apiRequest.interceptors.request.use((config) => {
 
 ## Database Setup
 
-### Song Schema — `models/commentModel.js`
+### Comment Schema — `models/commentModel.js`
 
 ```js
 import mongoose from "mongoose";
@@ -304,7 +313,9 @@ const commentSchema = new mongoose.Schema(
 export default mongoose.model("Comment", commentSchema);
 ```
 
-### Playlist Schema — `models/postModel.js`
+---
+
+### post Schema — `models/postModel.js`
 
 ```js
 import mongoose from "mongoose";
@@ -355,6 +366,8 @@ const postSchema = new mongoose.Schema(
 
 export default mongoose.model("Post", postSchema);
 ```
+
+---
 
 ### User Schema — `models/UserModel.js`
 
@@ -417,16 +430,14 @@ export default mongoose.model("User", userSchema);
 
 ## Component Breakdown
 
-### `Player.jsx` — Media Player Core
-
-The main player uses the browser's built-in HTML5 `<audio>` element via the `useRef` hook.
+### `PostCard.jsx` — blogging Core
 
 ```jsx
-###Code Overview
+// Code Overview
 import { MessageSquare } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-📡 Data Fetching
+//Data Fetching
 useEffect(() => {
   fetch("http://localhost:5001/api/posts")
     .then((res) => res.json())
@@ -437,7 +448,7 @@ useEffect(() => {
     .catch(() => setLoading(false));
 }, []);
 
-###🔎 Search Functionality
+// Search Functionality
 const location = useLocation();
 const search = new URLSearchParams(location.search).get("search") || "";
 
@@ -452,31 +463,34 @@ const filteredPosts = posts.filter((post) => {
   );
 });
 
-##⏳ Loading State
+//Loading State
 if (loading) {
   return (
     <div className="grid grid-cols-4 gap-6">
-      {Array(8).fill(0).map((_, i) => (
-        <div key={i} className="h-64 bg-purple-100 animate-pulse rounded-xl" />
-      ))}
+      {Array(8)
+        .fill(0)
+        .map((_, i) => (
+          <div
+            key={i}
+            className="h-64 bg-purple-100 animate-pulse rounded-xl"
+          />
+        ))}
     </div>
   );
 }
-🧱 Post Card UI
+//Post Card UI
 <Link to={`/posts/${post._id}`}>
   <img src={post.image} alt={post.title} />
 
   <h2>{post.title}</h2>
 
-  <div
-    dangerouslySetInnerHTML={{ __html: post.description }}
-  />
+  <div dangerouslySetInnerHTML={{ __html: post.description }} />
 
   <div>
     <span>{post.author?.username || "Unknown"}</span>
     <span>{post.comments?.length || 0} comments</span>
   </div>
-</Link>
+</Link>;
 ```
 
 ---
@@ -486,6 +500,7 @@ if (loading) {
 Working through this project will teach you the following concepts:
 
 ### React.js
+
 - Functional components and JSX
 - `useState` and `useEffect` hooks
 - `useLocation` (URL query handling for search)
@@ -494,6 +509,7 @@ Working through this project will teach you the following concepts:
 - Component-based architecture (PostCard, Header, etc.)
 
 ### Node.js & Express.js
+
 - Setting up an Express server
 - Creating REST API routes and controllers
 - Using middleware (CORS, JSON body parser, JWT auth)
@@ -501,6 +517,7 @@ Working through this project will teach you the following concepts:
 - Handling authentication-protected routes
 
 ### MongoDB & Mongoose
+
 - Defining schemas and models (User, Post, Comment)
 - CRUD operations (Create, Read, Update, Delete)
 - Referencing documents using `ObjectId`
@@ -508,11 +525,14 @@ Working through this project will teach you the following concepts:
 - Schema validation and timestamps
 
 ### API Authentication (JWT)
+
 - Hashing passwords with `bcryptjs`
 - Generating JWT tokens on login/register
 - Protecting routes using middleware
 - Sending tokens via `Authorization` headers
 - Storing token in `localStorage`
+
+---
 
 ## ⚙️ Environment Variables
 
@@ -522,9 +542,11 @@ Create a `.env` file inside the `/backend` folder:
 PORT=5001
 MONGO_URI=mongodb://localhost:27017/blog-website
 JWT_SECRET=your_super_secret_key_here
-⚠️ Make sure to add .env to .gitignore before pushing to GitHub.
+```
 
-###🚀 Roadmap / Bonus Features
+⚠️ Make sure to add `.env` to `.gitignore` before pushing to GitHub.
+
+## 🚀 Roadmap / Bonus Features
 
 Once your blog is working, you can upgrade it into a production-level project:
 
@@ -537,6 +559,7 @@ Once your blog is working, you can upgrade it into a production-level project:
 - Add comment replies (nested comments)
 - Deploy backend to Render / Railway
 - Deploy frontend to Vercel / Netlify
+
 ---
 
 ## Contributing

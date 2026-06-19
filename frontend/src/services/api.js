@@ -1,6 +1,6 @@
 import axios from "axios";
 
- const apiRequest = axios.create({
+ export const apiRequest = axios.create({
   baseURL: "http://localhost:5001/api",
   withCredentials: true,
 });
@@ -14,4 +14,3 @@ apiRequest.interceptors.request.use((config) => {
 
   return config;
 });
-export default apiRequest;

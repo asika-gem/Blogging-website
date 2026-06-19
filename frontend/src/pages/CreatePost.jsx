@@ -30,13 +30,9 @@ const CreatePost = () => {
       formData.append("category", category);
       formData.append("image", image);
 
-      const res = await apiRequest.post("/posts", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await apiRequest.post("/posts", formData);
 
-      console.log( res.data);
+      console.log(res.data);
 
       toast.success("Post created successfully!");
 
@@ -122,12 +118,6 @@ const CreatePost = () => {
 
           {/* BUTTONS */}
           <div className="flex justify-end gap-4">
-            <button
-              type="button"
-              className="px-6 py-3 rounded-lg border border-purple-200 text-purple-700 hover:bg-purple-50"
-            >
-              Save Draft
-            </button>
 
             <button
               type="submit"
