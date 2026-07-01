@@ -38,7 +38,7 @@ const MyPosts = () => {
     <div className="max-w-6xl mx-auto p-6">
       {/* PROFILE HEADER */}
       <div className="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-md border border-purple-100 mb-10">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+        <div className="w-20 h-20 rounded-full bg-linear-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
           {user?.username?.charAt(0).toUpperCase()}
         </div>
 

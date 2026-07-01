@@ -118,7 +118,6 @@ const CreatePost = () => {
 
           {/* BUTTONS */}
           <div className="flex justify-end gap-4">
-
             <button
               type="submit"
               disabled={loading}
