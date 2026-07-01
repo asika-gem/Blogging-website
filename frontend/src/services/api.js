@@ -1,7 +1,7 @@
 import axios from "axios";
 
- export const apiRequest = axios.create({
-  baseURL: "http://localhost:5001/api",
+export const apiRequest = axios.create({
+  baseURL: "https://blogging-backend-uy92.onrender.com/api",
   withCredentials: true,
 });
 
