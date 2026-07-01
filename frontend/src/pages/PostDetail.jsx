@@ -98,7 +98,6 @@ const PostDetail = () => {
       toast.success("Comment updated");
     } catch (err) {
       console.error("Failed to update comment", err);
-      
     }
   };
 
@@ -121,9 +120,7 @@ const PostDetail = () => {
   const isOwner =
     currentUser?.id === post?.author?._id || currentUser?.id === post?.author;
 
-  const isAdmin = currentUser?.role === "admin";
-  const canEditDelete = isOwner || isAdmin;
-
+  const canEditDelete = isOwner;
   return (
     <div className="min-h-screen bg-linear-to-br from-purple-50 via-white to-purple-100 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -194,9 +191,7 @@ const PostDetail = () => {
                       currentUser?.id === comment.author?._id ||
                       currentUser?.id === comment.author;
 
-                    const isAdmin = currentUser?.role === "admin";
-
-                    const canEditDeleteComment = isCommentOwner || isAdmin;
+                    const canEditDeleteComment = isCommentOwner;
 
                     return (
                       <div key={comment._id} className="flex gap-3">
@@ -258,7 +253,7 @@ const PostDetail = () => {
             {/* POST ACTIONS */}
             {canEditDelete && (
               <div className="mt-10 pt-6 border-t">
-                <div className="flex items-center justify-between bg-gradient-to-r from-purple-50 to-white border border-purple-100 rounded-xl p-4 shadow-sm">
+                <div className="flex items-center justify-between bg-linear-to-r from-purple-50 to-white border border-purple-100 rounded-xl p-4 shadow-sm">
                   {/* LEFT TEXT */}
                   <div>
                     <h3 className="text-sm font-semibold text-purple-900">

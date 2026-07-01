@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 const Dashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const isActive = (path) => location.pathname === path;
 
@@ -51,19 +51,21 @@ const Dashboard = () => {
           </Link>
 
           {/* ALL POSTS */}
-          <Link
-            to="/dashboard/posts"
-            className={`flex items-center gap-3 p-3 rounded-lg transition ${
-              isActive("/dashboard/posts")
-                ? "bg-purple-100 text-purple-900 font-medium border border-purple-200"
-                : "text-purple-700 hover:bg-purple-50"
-            }`}
-          >
-            <FileText size={18} />
-            All Posts
-          </Link>
+          {user?.role === "admin" && (
+            <Link
+              to="/dashboard/posts"
+              className={`flex items-center gap-3 p-3 rounded-lg transition ${
+                isActive("/dashboard/posts")
+                  ? "bg-purple-100 text-purple-900 font-medium border border-purple-200"
+                  : "text-purple-700 hover:bg-purple-50"
+              }`}
+            >
+              <FileText size={18} />
+              All Posts
+            </Link>
+          )}
 
-          {/* MY POSTS ⭐ NEW */}
+          {/* MY POSTS  */}
           <Link
             to="/dashboard/my-posts"
             className={`flex items-center gap-3 p-3 rounded-lg transition ${

@@ -37,7 +37,7 @@ const EditPost = () => {
         setPreviewImage(
           post.image?.startsWith("http")
             ? post.image
-            : `http://localhost:5001/${post.image}`,
+            : `${apiRequest.defaults.baseURL.replace("/api", "")}/${post.image}`,
         );
 
         setLoading(false);

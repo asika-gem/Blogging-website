@@ -1,6 +1,7 @@
 import { MessageSquare } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { apiRequest } from "../services/api";
 
 const PostCard = () => {
   const [posts, setPosts] = useState([]);
@@ -14,16 +15,18 @@ const PostCard = () => {
   const search = query.get("search") || "";
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/posts")
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(Array.isArray(data) ? data : []);
+    const fetchPosts = async () => {
+      try {
+        const res = await apiRequest.get("/posts");
+        setPosts(res.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   // Filter posts

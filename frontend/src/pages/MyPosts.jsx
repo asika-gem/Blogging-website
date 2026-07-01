@@ -70,12 +70,13 @@ const MyPosts = () => {
               className="cursor-pointer bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition group"
             >
               {/* IMAGE */}
+
               {post.image && (
                 <img
                   src={
                     post.image.startsWith("http")
                       ? post.image
-                      : `http://localhost:5001/${post.image}`
+                      : `${apiRequest.defaults.baseURL.replace("/api", "")}/${post.image}`
                   }
                   className="h-56 w-full object-cover group-hover:scale-105 transition duration-300"
                   alt="post"
