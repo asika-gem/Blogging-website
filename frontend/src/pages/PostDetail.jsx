@@ -48,6 +48,12 @@ const PostDetail = () => {
 
   // ADD COMMENT
   const handleComment = async () => {
+    if (!currentUser) {
+      toast.error("Please login to comment.");
+      navigate("/login");
+      return;
+    }
+
     if (!commentText.trim()) return;
 
     try {
@@ -60,8 +66,8 @@ const PostDetail = () => {
 
       setCommentText("");
       toast.success("Comment added");
-    } catch (_error) {
-      console.error("Failed to add comment", _error);
+    } catch (error) {
+      console.error("Failed to add comment", error);
       toast.error("Failed to add comment");
     }
   };
@@ -167,20 +173,38 @@ const PostDetail = () => {
               </h2>
 
               {/* INPUT */}
-              <div className="flex gap-3 mb-6">
-                <input
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  className="flex-1 border border-purple-200 rounded-full px-4 py-2 text-sm outline-none"
-                  placeholder="Write a comment..."
-                />
+              {/* INPUT */}
+              <div className="mb-6">
+                {currentUser ? (
+                  <div className="flex gap-3">
+                    <input
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      className="flex-1 border border-purple-200 rounded-full px-4 py-2 text-sm outline-none"
+                      placeholder="Write a comment..."
+                    />
 
-                <button
-                  onClick={handleComment}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full text-sm"
-                >
-                  Post
-                </button>
+                    <button
+                      onClick={handleComment}
+                      className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-full text-sm"
+                    >
+                      Post
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-gray-500 text-sm">
+                      Please{" "}
+                      <Link
+                        to="/login"
+                        className="text-purple-600 font-medium hover:underline"
+                      >
+                        log in
+                      </Link>{" "}
+                      to write a comment.
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* LIST */}
