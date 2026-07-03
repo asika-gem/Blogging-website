@@ -166,7 +166,7 @@ const NavBar = () => {
       )}
 
     </header>
-    </header>
+    
   );
 };
 
