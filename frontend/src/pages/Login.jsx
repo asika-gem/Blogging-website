@@ -43,9 +43,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(userData));
       updateUser(userData);
 
-    
-        navigate("/");
-  
+      navigate("/");
     } catch (error) {
       setError(error.response?.data?.message || "Something went wrong");
       console.log(error);
@@ -57,19 +55,20 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col bg-linear-to-r from-purple-100 via-pink-100 to-purple-200">
       {/* Header */}
-      <div className="w-full text-center p-12">
-        <h1 className="text-5xl font-bold text-purple-700 mb-6">
+      <div className="w-full text-center px-4 py-8 md:p-12">
+        <h1 className="text-3xl md:text-5xl font-bold text-purple-700 mb-4 md:mb-6">
           Log in to Blogify
         </h1>
-        <p className="text-2xl text-purple-600">
+        <p className="text-base md:text-2xl text-purple-600">
           Sign in to continue your journey and unlock all features.
         </p>
       </div>
 
       {/* Form */}
-      <div className="grow flex items-center justify-center p-12">
-        <div className="bg-white p-12 rounded-2xl shadow-xl w-full max-w-lg">
-          <h2 className="text-4xl font-extrabold text-center text-purple-700 mb-8">
+      <div className="grow flex justify-center px-4 py-8 md:py-12">
+        <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6 md:p-12">
+          <h2 className="text-2xl md:text-4xl font-extrabold text-center text-purple-700 mb-6 md:mb-8">
+            {" "}
             Log In
           </h2>
 
@@ -82,35 +81,35 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Username */}
             <div>
-              <label className="block text-gray-700 mb-3 text-lg font-semibold">
+              <label className="block text-gray-700 mb-2 md:mb-3 text-base md:text-lg font-semibold">
                 Username
               </label>
               <div className="flex items-center bg-purple-50 rounded-xl border focus-within:ring-2 focus-within:ring-purple-400 transition-all">
-                <User className="ml-4 text-purple-500" size={24} />
+                <User className="ml-3 md:ml-4 text-purple-500" size={24} />
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter your username"
-                  className="w-full px-4 py-4 text-lg bg-transparent focus:outline-none"
+                  className="w-full px-3 md:px-4 py-3 md:py-4 text-base md:text-lg bg-transparent focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-gray-700 mb-3 text-lg font-semibold">
+              <label className="block text-gray-700 mb-2 md:mb-3 text-base md:text-lg font-semibold">
                 Password
               </label>
               <div className="flex items-center bg-purple-50 rounded-xl border focus-within:ring-2 focus-within:ring-purple-400 transition-all">
-                <Lock className="ml-4 text-purple-500" size={24} />
+                <Lock className="ml-3 md:ml-4 text-purple-500" size={24} />
 
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full px-4 py-4 text-lg bg-transparent focus:outline-none"
+                  className="w-full px-3 md:px-4 py-3 md:py-4 text-base md:text-lg bg-transparent focus:outline-none"
                 />
 
                 <button
@@ -119,9 +118,9 @@ const Login = () => {
                   className="mr-4"
                 >
                   {showPassword ? (
-                    <EyeOff className="text-purple-500" size={22} />
+                    <EyeOff className="text-purple-500" size={20} />
                   ) : (
-                    <Eye className="text-purple-500" size={22} />
+                    <Eye className="text-purple-500" size={20} />
                   )}
                 </button>
               </div>
@@ -131,7 +130,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-purple-600 hover:bg-purple-700 text-white py-4 rounded-xl text-xl font-bold transition ${
+              className={`w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl md:text-xl font-bold transition ${
                 isLoading
                   ? "opacity-70 cursor-not-allowed"
                   : "hover:scale-[1.02]"
@@ -142,7 +141,7 @@ const Login = () => {
           </form>
 
           {/* Links */}
-          <p className="text-center text-lg text-gray-600 mt-8">
+          <p className="text-center text-base md:text-lg text-gray-600 mt-6 md:mt-8">
             Don’t have an account?{" "}
             <Link
               to="/logup"
@@ -152,7 +151,7 @@ const Login = () => {
             </Link>
           </p>
 
-          <p className="text-center text-lg text-gray-600 mt-3 flex items-center justify-center gap-2">
+          <p className="text-center text-base md:text-lg text-gray-600 mt-3 flex items-center justify-center gap-2">
             <Home size={20} className="text-purple-600" />
             <Link
               to="/"
